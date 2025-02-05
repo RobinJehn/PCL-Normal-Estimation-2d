@@ -40,7 +40,7 @@ int Normal2dEstimation::searchForNeighbors(int index, std::vector<int>& nn_indic
 void Normal2dEstimation::compute(const PtrCloud& normal_cloud) const {
   // Allocate enough space to hold the results
   // \note This resize is irrelevant for a radiusSearch ().
-  boost::shared_ptr<std::vector<int>> nn_indices(new std::vector<int>(m_k));
+  std::shared_ptr<std::vector<int>> nn_indices(new std::vector<int>(m_k));
   std::vector<float> nn_dists(m_k);
 
   normal_cloud->points.resize(m_in_cloud->points.size());
@@ -101,7 +101,7 @@ void Normal2dEstimation::compute(const PtrCloud& normal_cloud) const {
 void Normal2dEstimation::compute(const pcl::PointCloud<pcl::Normal>::Ptr& normal_cloud) const {
   // Allocate enough space to hold the results
   // \note This resize is irrelevant for a radiusSearch ().
-  boost::shared_ptr<std::vector<int>> nn_indices(new std::vector<int>(m_k));
+  std::shared_ptr<std::vector<int>> nn_indices(new std::vector<int>(m_k));
   std::vector<float> nn_dists(m_k);
 
   normal_cloud->points.resize(m_in_cloud->points.size());
@@ -162,8 +162,8 @@ void Normal2dEstimation::compute(const pcl::PointCloud<pcl::Normal>::Ptr& normal
   }
 }
 
-bool Normal2dEstimation::computePointNormal2d(boost::shared_ptr<std::vector<int>>& indices,
-                                              float& nx, float& ny, float& nz) const {
+bool Normal2dEstimation::computePointNormal2d(std::shared_ptr<std::vector<int>>& indices, float& nx,
+                                              float& ny, float& nz) const {
   if (indices->size() < 2) {
     nx = ny = nz = std::numeric_limits<float>::quiet_NaN();
     return false;
@@ -193,9 +193,8 @@ bool Normal2dEstimation::computePointNormal2d(boost::shared_ptr<std::vector<int>
   return true;
 }
 
-bool Normal2dEstimation::computePointNormal2d(boost::shared_ptr<std::vector<int>>& indices,
-                                              float& nx, float& ny, float& nz,
-                                              float& curvature) const {
+bool Normal2dEstimation::computePointNormal2d(std::shared_ptr<std::vector<int>>& indices, float& nx,
+                                              float& ny, float& nz, float& curvature) const {
   if (indices->size() < 2) {
     nx = ny = nz = curvature = std::numeric_limits<float>::quiet_NaN();
     return false;
@@ -227,7 +226,7 @@ bool Normal2dEstimation::computePointNormal2d(boost::shared_ptr<std::vector<int>
   return true;
 }
 
-bool Normal2dEstimation::computePointNormal2d(boost::shared_ptr<std::vector<int>>& indices,
+bool Normal2dEstimation::computePointNormal2d(std::shared_ptr<std::vector<int>>& indices,
                                               Eigen::Vector3f& line_parameters) const {
   if (indices->size() < 2) {
     line_parameters.setConstant(std::numeric_limits<float>::quiet_NaN());
@@ -247,7 +246,7 @@ bool Normal2dEstimation::computePointNormal2d(boost::shared_ptr<std::vector<int>
     return true;
   }
 
-  pcl::PCA<Point> pca;
+  PCA2D pca;
 
   pca.setInputCloud(m_in_cloud);
   pca.setIndices(indices);

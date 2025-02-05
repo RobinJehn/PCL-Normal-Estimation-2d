@@ -56,7 +56,7 @@ void PCA2D::setIndices(const pcl::PointIndicesConstPtr& indices) {
   m_indices->insert(m_indices->begin(), indices->indices.cbegin(), indices->indices.cend());
 }
 
-void PCA2D::setIndices(const boost::shared_ptr<std::vector<int>>& indices) {
+void PCA2D::setIndices(const std::shared_ptr<std::vector<int>>& indices) {
   m_computed = false;
   m_indices->insert(m_indices->begin(), indices->cbegin(), indices->cend());
 }
